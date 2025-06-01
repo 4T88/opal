@@ -1,0 +1,230 @@
+{% extends "analytics/base.html" %}
+
+{% block title %}Productivity Heatmap - Opal Analytics{% endblock %}
+
+{% block analytics_content %}
+<div class="heatmap-view">
+    <h1>Productivity Heatmap</h1>
+    
+    <div class="heatmap-controls">
+        <div class="control-group">
+            <label for="timeRange">Time Range:</label>
+            <select id="timeRange" class="form-control">
+                <option value="7">Last 7 days</option>
+                <option value="30" selected>Last 30 days</option>
+                <option value="90">Last 90 days</option>
+                <option value="365">Last year</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label for="metric">Metric:</label>
+            <select id="metric" class="form-control">
+                <option value="tasks">Tasks Completed</option>
+                <option value="duration">Time Spent</option>
+                <option value="efficiency">Efficiency</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="heatmap-content">
+        <div class="heatmap-chart">
+            {{ heatmap | safe }}
+        </div>
+        
+        <div class="heatmap-legend">
+            <h3>Legend</h3>
+            <div class="legend-scale">
+                <div class="legend-item">
+                    <div class="color-box" style="background-color: #ebf8ff;"></div>
+                    <span>Low</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background-color: #90cdf4;"></div>
+                    <span>Medium</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-box" style="background-color: #2b6cb0;"></div>
+                    <span>High</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="heatmap-insights">
+            <h3>Insights</h3>
+            <div class="insights-list">
+                <div class="insight-item">
+                    <i class="fas fa-clock"></i>
+                    <p>Your most productive hours are between <span id="peakHours">9 AM - 11 AM</span></p>
+                </div>
+                <div class="insight-item">
+                    <i class="fas fa-calendar-day"></i>
+                    <p>You complete most tasks on <span id="peakDay">Monday</span></p>
+                </div>
+                <div class="insight-item">
+                    <i class="fas fa-chart-line"></i>
+                    <p>Your productivity trend is <span id="productivityTrend">increasing</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<style>
+.heatmap-view {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.heatmap-view h1 {
+    color: #2d3748;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.heatmap-controls {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.control-group label {
+    color: #4a5568;
+    font-size: 0.9rem;
+}
+
+.form-control {
+    padding: 0.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    background: #fff;
+    color: #2d3748;
+    min-width: 150px;
+}
+
+.heatmap-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.heatmap-chart {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    grid-column: 1 / -1;
+}
+
+.heatmap-legend {
+    background: #f7fafc;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+.heatmap-legend h3 {
+    color: #2d3748;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.legend-scale {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+
+.heatmap-insights {
+    background: #f7fafc;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+.heatmap-insights h3 {
+    color: #2d3748;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.insights-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.insight-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.insight-item i {
+    color: #2b6cb0;
+    font-size: 1.1rem;
+    margin-top: 0.2rem;
+}
+
+.insight-item p {
+    color: #4a5568;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.insight-item span {
+    color: #2b6cb0;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .heatmap-controls {
+        flex-direction: column;
+    }
+    
+    .heatmap-content {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const timeRange = document.getElementById('timeRange');
+    const metric = document.getElementById('metric');
+    
+    timeRange.addEventListener('change', updateHeatmap);
+    metric.addEventListener('change', updateHeatmap);
+    
+    function updateHeatmap() {
+        // This function would be implemented to update the heatmap
+        // based on the selected time range and metric
+        console.log('Updating heatmap...');
+    }
+});
+</script>
+{% endblock %} 

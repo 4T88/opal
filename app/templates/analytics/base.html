@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics - Opal{% endblock %}
+
+{% block content %}
+<div class="analytics-container">
+    <div class="analytics-sidebar">
+        <h2>Analytics</h2>
+        <nav class="analytics-nav">
+            <a href="{{ url_for('analytics.dashboard') }}" class="nav-item {% if request.endpoint == 'analytics.dashboard' %}active{% endif %}">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="{{ url_for('analytics.task_analysis') }}" class="nav-item {% if request.endpoint == 'analytics.task_analysis' %}active{% endif %}">
+                <i class="fas fa-tasks"></i> Task Analysis
+            </a>
+            <a href="{{ url_for('analytics.productivity_timeline') }}" class="nav-item {% if request.endpoint == 'analytics.productivity_timeline' %}active{% endif %}">
+                <i class="fas fa-clock"></i> Timeline
+            </a>
+            <a href="{{ url_for('analytics.productivity_heatmap') }}" class="nav-item {% if request.endpoint == 'analytics.productivity_heatmap' %}active{% endif %}">
+                <i class="fas fa-calendar-alt"></i> Heatmap
+            </a>
+            <a href="{{ url_for('analytics.task_patterns') }}" class="nav-item {% if request.endpoint == 'analytics.task_patterns' %}active{% endif %}">
+                <i class="fas fa-chart-bar"></i> Patterns
+            </a>
+        </nav>
+    </div>
+    
+    <div class="analytics-content">
+        {% block analytics_content %}{% endblock %}
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.analytics-container {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    min-height: calc(100vh - 64px);
+}
+
+.analytics-sidebar {
+    width: 250px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.analytics-sidebar h2 {
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    font-size: 1.5rem;
+}
+
+.analytics-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: #4a5568;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+    background: #f7fafc;
+    color: #2d3748;
+}
+
+.nav-item.active {
+    background: #ebf8ff;
+    color: #2b6cb0;
+    font-weight: 500;
+}
+
+.analytics-content {
+    flex: 1;
+    background: #fff;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+    .analytics-container {
+        flex-direction: column;
+    }
+    
+    .analytics-sidebar {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %} 

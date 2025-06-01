@@ -1,0 +1,82 @@
+{% extends "analytics/base.html" %}
+
+{% block title %}Dashboard - Opal Analytics{% endblock %}
+
+{% block analytics_content %}
+<div class="dashboard">
+    <h1>Productivity Dashboard</h1>
+    
+    <div class="metrics-grid">
+        {% for name, metric in metrics.items() %}
+        <div class="metric-card">
+            {{ metric | safe }}
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="charts-grid">
+        {% for name, chart in dashboard.items() %}
+        <div class="chart-card">
+            <h3>{{ name | title | replace('_', ' ') }}</h3>
+            {{ chart | safe }}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<style>
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.dashboard h1 {
+    color: #2d3748;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.metric-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 2rem;
+}
+
+.chart-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.chart-card h3 {
+    color: #4a5568;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %} 

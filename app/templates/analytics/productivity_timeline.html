@@ -1,0 +1,166 @@
+{% extends "analytics/base.html" %}
+
+{% block title %}Productivity Timeline - Opal Analytics{% endblock %}
+
+{% block analytics_content %}
+<div class="timeline-view">
+    <h1>Productivity Timeline</h1>
+    
+    <div class="timeline-controls">
+        <div class="control-group">
+            <label for="timeRange">Time Range:</label>
+            <select id="timeRange" class="form-control">
+                <option value="7">Last 7 days</option>
+                <option value="30" selected>Last 30 days</option>
+                <option value="90">Last 90 days</option>
+                <option value="365">Last year</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label for="viewType">View Type:</label>
+            <select id="viewType" class="form-control">
+                <option value="timeline" selected>Timeline</option>
+                <option value="calendar">Calendar</option>
+                <option value="list">List</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="timeline-content">
+        <div class="timeline-chart">
+            {{ timeline | safe }}
+        </div>
+        
+        <div class="timeline-stats">
+            <div class="stat-card">
+                <h4>Total Tasks</h4>
+                <p class="stat-value" id="totalTasks">0</p>
+            </div>
+            <div class="stat-card">
+                <h4>Completed Tasks</h4>
+                <p class="stat-value" id="completedTasks">0</p>
+            </div>
+            <div class="stat-card">
+                <h4>Completion Rate</h4>
+                <p class="stat-value" id="completionRate">0%</p>
+            </div>
+            <div class="stat-card">
+                <h4>Average Duration</h4>
+                <p class="stat-value" id="avgDuration">0h</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<style>
+.timeline-view {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.timeline-view h1 {
+    color: #2d3748;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.timeline-controls {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.control-group label {
+    color: #4a5568;
+    font-size: 0.9rem;
+}
+
+.form-control {
+    padding: 0.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    background: #fff;
+    color: #2d3748;
+    min-width: 150px;
+}
+
+.timeline-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.timeline-chart {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    min-height: 400px;
+}
+
+.timeline-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-card {
+    background: #f7fafc;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+}
+
+.stat-card h4 {
+    color: #4a5568;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    color: #2b6cb0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .timeline-controls {
+        flex-direction: column;
+    }
+    
+    .timeline-stats {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const timeRange = document.getElementById('timeRange');
+    const viewType = document.getElementById('viewType');
+    
+    timeRange.addEventListener('change', updateTimeline);
+    viewType.addEventListener('change', updateTimeline);
+    
+    function updateTimeline() {
+        // This function would be implemented to update the timeline
+        // based on the selected time range and view type
+        console.log('Updating timeline...');
+    }
+});
+</script>
+{% endblock %} 

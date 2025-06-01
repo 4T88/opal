@@ -1,0 +1,252 @@
+{% extends "analytics/base.html" %}
+
+{% block title %}Task Patterns - Opal Analytics{% endblock %}
+
+{% block analytics_content %}
+<div class="patterns-view">
+    <h1>Task Patterns</h1>
+    
+    <div class="patterns-grid">
+        <div class="pattern-card">
+            <h3>Category Distribution</h3>
+            <div class="pattern-content">
+                {% if patterns.completion_by_category %}
+                <div class="pattern-chart">
+                    {{ patterns.completion_by_category | safe }}
+                </div>
+                <div class="pattern-stats">
+                    {% for category, rate in patterns.completion_by_category.items() %}
+                    <div class="stat-row">
+                        <span class="stat-label">{{ category }}</span>
+                        <span class="stat-value">{{ "%.1f"|format(rate * 100) }}%</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="no-data">No category data available</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="pattern-card">
+            <h3>Time Distribution</h3>
+            <div class="pattern-content">
+                {% if patterns.completion_by_time %}
+                <div class="pattern-chart">
+                    {{ patterns.completion_by_time | safe }}
+                </div>
+                <div class="pattern-stats">
+                    {% for hour, count in patterns.completion_by_time.items() %}
+                    <div class="stat-row">
+                        <span class="stat-label">{{ hour }}:00</span>
+                        <span class="stat-value">{{ count }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="no-data">No time distribution data available</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="pattern-card">
+            <h3>Duration Analysis</h3>
+            <div class="pattern-content">
+                {% if patterns.average_duration_by_category %}
+                <div class="pattern-chart">
+                    {{ patterns.average_duration_by_category | safe }}
+                </div>
+                <div class="pattern-stats">
+                    {% for category, duration in patterns.average_duration_by_category.items() %}
+                    <div class="stat-row">
+                        <span class="stat-label">{{ category }}</span>
+                        <span class="stat-value">{{ "%.1f"|format(duration / 60) }}h</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="no-data">No duration data available</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="pattern-card">
+            <h3>Success Rates</h3>
+            <div class="pattern-content">
+                {% if patterns.success_rate_by_category %}
+                <div class="pattern-chart">
+                    {{ patterns.success_rate_by_category | safe }}
+                </div>
+                <div class="pattern-stats">
+                    {% for category, rate in patterns.success_rate_by_category.items() %}
+                    <div class="stat-row">
+                        <span class="stat-label">{{ category }}</span>
+                        <span class="stat-value">{{ "%.1f"|format(rate * 100) }}%</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="no-data">No success rate data available</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="patterns-insights">
+        <h2>Pattern Insights</h2>
+        <div class="insights-grid">
+            <div class="insight-card">
+                <h4>Most Productive Category</h4>
+                <p id="mostProductiveCategory">Loading...</p>
+            </div>
+            <div class="insight-card">
+                <h4>Peak Productivity Hours</h4>
+                <p id="peakProductivityHours">Loading...</p>
+            </div>
+            <div class="insight-card">
+                <h4>Average Task Duration</h4>
+                <p id="averageTaskDuration">Loading...</p>
+            </div>
+            <div class="insight-card">
+                <h4>Success Rate Trend</h4>
+                <p id="successRateTrend">Loading...</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<style>
+.patterns-view {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.patterns-view h1 {
+    color: #2d3748;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.patterns-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+}
+
+.pattern-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.pattern-card h3 {
+    color: #2d3748;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.pattern-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.pattern-chart {
+    min-height: 200px;
+}
+
+.pattern-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    background: #f7fafc;
+    border-radius: 4px;
+}
+
+.stat-label {
+    color: #4a5568;
+}
+
+.stat-value {
+    color: #2b6cb0;
+    font-weight: 500;
+}
+
+.no-data {
+    color: #718096;
+    text-align: center;
+    padding: 2rem;
+}
+
+.patterns-insights {
+    margin-top: 2rem;
+}
+
+.patterns-insights h2 {
+    color: #2d3748;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.insight-card {
+    background: #f7fafc;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+.insight-card h4 {
+    color: #2b6cb0;
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+}
+
+.insight-card p {
+    color: #4a5568;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .patterns-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .insights-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Update insights based on pattern data
+    function updateInsights() {
+        // This function would be implemented to update the insights
+        // based on the pattern data
+        console.log('Updating insights...');
+    }
+    
+    updateInsights();
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,121 @@
+{% extends "analytics/base.html" %}
+
+{% block title %}Task Analysis - Opal Analytics{% endblock %}
+
+{% block analytics_content %}
+<div class="task-analysis">
+    <h1>Task Analysis</h1>
+    
+    <div class="analysis-grid">
+        {% for name, chart in report.items() %}
+        <div class="analysis-card">
+            <h3>{{ name | title | replace('_', ' ') }}</h3>
+            {{ chart | safe }}
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="insights-section">
+        <h2>Key Insights</h2>
+        <div class="insights-grid">
+            <div class="insight-card">
+                <h4>Task Distribution</h4>
+                <p>Analyze how your tasks are distributed across different categories and priorities.</p>
+            </div>
+            <div class="insight-card">
+                <h4>Completion Patterns</h4>
+                <p>Understand your task completion patterns and identify areas for improvement.</p>
+            </div>
+            <div class="insight-card">
+                <h4>Time Management</h4>
+                <p>Track how you're spending time on different types of tasks.</p>
+            </div>
+            <div class="insight-card">
+                <h4>Performance Metrics</h4>
+                <p>Monitor your productivity and efficiency metrics over time.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<style>
+.task-analysis {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.task-analysis h1 {
+    color: #2d3748;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.analysis-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.analysis-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.analysis-card h3 {
+    color: #4a5568;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.insights-section {
+    margin-top: 2rem;
+}
+
+.insights-section h2 {
+    color: #2d3748;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.insight-card {
+    background: #f7fafc;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+.insight-card h4 {
+    color: #2b6cb0;
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+}
+
+.insight-card p {
+    color: #4a5568;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .analysis-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .insights-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %} 
